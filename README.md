@@ -4,7 +4,7 @@
 
 Sanitized public export of a Waveshare ESP32-S3 Relay-6CH dual-zone greenhouse firmware experiment.
 
-Status: Prototype / Sanitized public export / Not production-ready.
+Status: Prototype / NEEDS_CLEANUP / Not production-ready.
 
 This repository contains firmware and documentation for studying a two-zone greenhouse vent controller. It is not a live production dump and does not include private configuration, credentials, live topology, logs, backups, binaries, or deployment notes.
 
@@ -28,6 +28,14 @@ A Waveshare ESP32-S3 Relay-6CH board can run a local dual-zone vent controller w
 
 Port the active dual-zone controller sketch into a sanitized firmware repository, separate all credentials into ignored local configuration, document the relay/pin assumptions, and keep the source export reviewable without live deployment details.
 
+What is intentionally not tested in this export:
+
+- live greenhouse operation;
+- production relay safety;
+- confirmed analog sensor wiring;
+- long-duration unattended operation;
+- recovery from every possible sensor or motor fault.
+
 ## Architecture
 
 - `firmware/` contains the sanitized Arduino sketch and example local configuration.
@@ -42,11 +50,16 @@ Port the active dual-zone controller sketch into a sanitized firmware repository
 
 Repository status: Prototype.
 
-Public readiness: Sanitized public export candidate.
+Public readiness: NEEDS_CLEANUP.
 
 Trust level: Medium for documentation shape, low for hardware validation in this clean export.
 
 Production readiness: Not production-ready.
+
+Reason for public readiness status:
+
+- The export is sanitized, but fresh hardware validation after sanitization is still missing.
+- Relay behavior, board revision, analog sensor pins, and build reproducibility still need documented checks.
 
 ## Results / Lessons
 
@@ -60,6 +73,14 @@ Production readiness: Not production-ready.
 - The source firmware contained hardcoded Wi-Fi/AP values and private network assumptions.
 - Serial help previously exposed credential values.
 - The firmware still needs fresh validation after sanitization.
+
+## Known limitations
+
+- This export does not prove safe operation on live vents or motors.
+- The reference board revision is not fully confirmed in this public record.
+- Analog sensor behavior is not verified in the clean export.
+- Build reproducibility is not yet documented as a completed check.
+- No release-ready claim is made.
 
 ## Next questions
 

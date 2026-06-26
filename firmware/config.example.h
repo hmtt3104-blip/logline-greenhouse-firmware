@@ -1,0 +1,5 @@
+#define WIFI_SSID "YOUR_WIFI_SSID"
+#define WIFI_PASS "YOUR_WIFI_PASSWORD"
+#define WIFI_HOSTNAME "logline-greenhouse-controller"
+#define AP_SSID "Logline-Greenhouse-Setup"
+#define AP_PASS "CHANGE_ME_STRONG_PASSWORD"

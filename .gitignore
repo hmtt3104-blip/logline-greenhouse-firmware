@@ -1,0 +1,13 @@
+firmware/config.h
+.env
+*.log
+*.bin
+*.elf
+*.map
+*.hex
+build/
+dist/
+private/
+private_samples/
+logs/
+backups/

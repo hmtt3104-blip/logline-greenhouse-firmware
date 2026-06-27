@@ -41,7 +41,7 @@ What is intentionally not tested in this export:
 - `firmware/` contains the sanitized Arduino sketch and example local configuration.
 - `hardware/` documents the generic Waveshare ESP32-S3 Relay-6CH pin map used by this experiment.
 - `docs/` contains architecture, setup, and safety notes.
-- `experiments/` contains experiment records.
+- `experiments/` is reserved for experiment records after fresh hardware validation.
 - `reference/` explains the sanitization boundary.
 - `data/` is reserved for sanitized reference data only.
 - `examples/` is reserved for sanitized examples only.
@@ -60,6 +60,7 @@ Reason for public readiness status:
 
 - The export is sanitized, but fresh hardware validation after sanitization is still missing.
 - Relay behavior, board revision, analog sensor pins, and build reproducibility still need documented checks.
+- No completed experiment record has been added for the sanitized firmware export yet.
 
 ## Results / Lessons
 
@@ -80,6 +81,7 @@ Reason for public readiness status:
 - The reference board revision is not fully confirmed in this public record.
 - Analog sensor behavior is not verified in the clean export.
 - Build reproducibility is not yet documented as a completed check.
+- No completed experiment record exists for the sanitized firmware export yet.
 - No release-ready claim is made.
 
 ## Next questions

@@ -5,4 +5,6 @@
 - Created sanitized clean export structure.
 - Added sanitized Waveshare ESP32-S3 dual-zone firmware sketch.
 - Moved network credentials to ignored local `firmware/config.h`.
-- Added setup, safety, architecture, hardware, reference, and experiment documentation.
+- Added setup, safety, architecture, hardware, and reference documentation.
+- Reserved `experiments/` for future hardware validation records.
+- Marked public readiness as `NEEDS_CLEANUP` until hardware validation, build reproducibility, and experiment records are completed.

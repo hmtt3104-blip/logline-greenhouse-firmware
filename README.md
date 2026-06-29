@@ -59,7 +59,8 @@ Production readiness: Not production-ready.
 Reason for public readiness status:
 
 - The export is sanitized, but fresh hardware validation after sanitization is still missing.
-- Relay behavior, board revision, analog sensor pins, and build reproducibility still need documented checks.
+- Relay behavior, board revision, and analog sensor pins still need documented hardware checks.
+- Build reproducibility has a first local Arduino CLI check, but it does not validate hardware behavior.
 - No completed experiment record has been added for the sanitized firmware export yet.
 
 ## Results / Lessons
@@ -80,7 +81,7 @@ Reason for public readiness status:
 - This export does not prove safe operation on live vents or motors.
 - The reference board revision is not fully confirmed in this public record.
 - Analog sensor behavior is not verified in the clean export.
-- Build reproducibility is not yet documented as a completed check.
+- Build reproducibility is documented as an Arduino CLI check, but hardware validation is still pending.
 - No completed experiment record exists for the sanitized firmware export yet.
 - No release-ready claim is made.
 
@@ -122,9 +123,16 @@ logline-greenhouse-firmware/
 1. Review `docs/safety.md`.
 2. Copy `firmware/config.example.h` to `firmware/config.h`.
 3. Replace placeholder values in `firmware/config.h` with local test credentials.
-4. Open `firmware/greenhouse-dualzone-waveshare-s3-relay6ch.ino` in the Arduino toolchain.
-5. Select the correct ESP32-S3 board profile for the test hardware.
-6. Flash only on bench hardware or a reviewed non-production setup.
+4. Open `firmware/firmware.ino` in the Arduino toolchain.
+5. Select board label `ESP32S3 Dev Module`.
+6. Use FQBN `esp32:esp32:esp32s3`.
+7. Optional bundled Arduino CLI compile check:
+
+```powershell
+& "C:\Users\V\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe" compile --fqbn esp32:esp32:esp32s3 --build-path "$env:TEMP\logline-greenhouse-firmware-build" firmware
+```
+
+8. Flash only on bench hardware or a reviewed non-production setup.
 
 ## Related repositories
 

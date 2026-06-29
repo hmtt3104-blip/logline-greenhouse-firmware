@@ -20,9 +20,20 @@ Then replace the placeholder values in `firmware/config.h`.
 
 ## Build notes
 
-Open `firmware/greenhouse-dualzone-waveshare-s3-relay6ch.ino` in the Arduino toolchain configured for ESP32-S3.
+Open `firmware/firmware.ino` in the Arduino toolchain configured for ESP32-S3.
 
-Select the board profile that matches the test Waveshare ESP32-S3 Relay-6CH hardware.
+The current local build check uses:
+
+- board label: `ESP32S3 Dev Module`
+- FQBN: `esp32:esp32:esp32s3`
+
+Bundled Arduino CLI command example:
+
+```powershell
+& "C:\Users\V\AppData\Local\Programs\Arduino IDE\resources\app\lib\backend\resources\arduino-cli.exe" compile --fqbn esp32:esp32:esp32s3 --build-path "$env:TEMP\logline-greenhouse-firmware-build" firmware
+```
+
+This compile check verifies build reproducibility only. It does not validate relay wiring, sensor wiring, or safe hardware behavior.
 
 ## Bench-first rule
 

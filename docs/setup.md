@@ -62,8 +62,10 @@ Expected startup indicators include:
 
 Important startup behavior:
 
-- startup close is enabled in the current firmware;
-- on boot, close relays for both zones may energize for about `10000 ms`;
+- public default disables startup close;
+- first boot should print `Startup close disabled: both zones assumed closed.`;
+- no automatic startup close relay motion should be queued on boot;
+- if startup close is re-enabled in a private deployment, close relays may energize on boot for `startupCloseMs`;
 - watch relay LEDs only with no loads attached during the first test.
 
 Expected without DHT sensors attached:
@@ -109,7 +111,8 @@ Flash only on bench hardware or a reviewed non-production setup until the saniti
 
 - Confirm the sketch builds with local `firmware/config.h`.
 - Confirm the board boots and prints expected Serial Monitor startup diagnostics at `115200`.
-- Confirm startup close relay behavior on bare board with no loads attached.
+- Confirm public default does not queue automatic startup close relay motion.
+- If startup close is re-enabled in a private deployment, confirm startup close relay behavior on bare board with no loads attached.
 - Confirm relay pins match the test board.
 - Confirm relay active level before connecting motors.
 - Confirm DHT pins and sensor type.

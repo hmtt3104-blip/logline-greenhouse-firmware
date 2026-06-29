@@ -63,7 +63,7 @@ Serial bench-readiness audit from code inspection:
 ```text
 Serial baud: 115200
 Firmware version string: greenhouse_vents_clean_test-wifi-v3
-Startup close enabled: close relays may energize for about 10000 ms on boot
+Public default disables startup close; first boot should not queue automatic close relay motion
 Analog sensors disabled by default because ANALOG_SENSOR_PINS_CONFIRMED is 0
 Expected no-DHT behavior: DHT returned NAN errors and zone error state after repeated failures
 ```
@@ -80,7 +80,7 @@ Hardware behavior: NOT VALIDATED.
 
 The sanitized sketch compiles locally with a local ignored `firmware/config.h` copied from `firmware/config.example.h` and placeholder/test values.
 
-The code inspection identified a critical first-bench safety point: startup close may energize close relays for both zones for about `10000 ms` on boot. Therefore, the first board test must be bare-board/no-load only.
+The code inspection identified a critical first-bench safety point: automatic startup close could energize close relays before manual validation. The public default now disables startup close to reduce first-boot/no-load risk. If startup close is re-enabled in a private deployment, close relays may energize on boot for `startupCloseMs`. The first board test must still be bare-board/no-load only.
 
 ## Failures
 
@@ -96,7 +96,7 @@ Arduino sketch naming must be reproducible from the public repo, not dependent o
 
 A successful compile is necessary evidence, but it does not prove relay safety, board revision compatibility, analog sensor behavior, AP setup behavior, or safe live vent/motor operation.
 
-A Serial Monitor bench checklist is required before any board is powered, because boot behavior can energize relays even before manual commands are tested.
+A Serial Monitor bench checklist is required before any board is powered, because relay behavior still needs validation before manual commands or private startup-close behavior are tested.
 
 ## Hardware validation checklist
 
@@ -105,7 +105,8 @@ Before this experiment can be promoted beyond draft/build-verified status, valid
 - confirm exact Waveshare ESP32-S3 Relay-6CH board revision;
 - confirm firmware flashes successfully to the selected board profile;
 - confirm Serial Monitor startup diagnostics at `115200`;
-- confirm startup close relay behavior on bare board with no loads attached;
+- confirm public default does not queue automatic startup close relay motion;
+- if startup close is re-enabled in a private deployment, confirm startup close relay behavior on bare board with no loads attached;
 - confirm relay active state before connecting any motor load;
 - confirm each documented relay pin maps to the expected physical relay;
 - confirm DHT readings and failure behavior;
@@ -120,6 +121,8 @@ Before this experiment can be promoted beyond draft/build-verified status, valid
 First board power-up must use USB power only, with no motors, actuators, or real relay loads connected.
 
 Do not run OPEN/CLOSE commands or use web UI motor controls until relay active state and wiring are verified.
+
+If startup close is re-enabled outside the public default, validate it only on bare-board/no-load hardware first.
 
 ## Next Question
 

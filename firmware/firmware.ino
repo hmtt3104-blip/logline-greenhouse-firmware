@@ -12,7 +12,7 @@
 // Clean two-zone test firmware for ESP32 greenhouse vent motors.
 // No MQTT, no Blynk, no Raspberry integration.
 
-static const bool ENABLE_STARTUP_CLOSE = true;
+static const bool ENABLE_STARTUP_CLOSE = false;
 
 static const uint8_t PIN_DHT_1 = 4;
 static const uint8_t PIN_OPEN_1 = 1;

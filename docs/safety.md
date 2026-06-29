@@ -25,7 +25,7 @@ Reason:
 - The public tree is sanitized and excludes real Wi-Fi credentials, access point passwords, private IP addresses, live topology, runtime configuration, logs, backups, binaries, images, and deployment notes.
 - Build reproducibility is verified with Arduino CLI using `esp32:esp32:esp32s3`.
 - Hardware behavior is not validated in this clean export.
-- Relay behavior, board revision, analog sensor pins, startup relay behavior, and bench boot behavior still need documented checks.
+- Relay behavior, board revision, analog sensor pins, manual relay behavior, and bench boot behavior still need documented checks.
 - The existing experiment record documents build evidence and serial bench readiness, but no completed hardware behavior validation exists yet.
 
 Finding statuses:
@@ -37,7 +37,7 @@ Finding statuses:
 | Runtime artifacts | OK | Logs, backups, binaries, images, and deployment notes are excluded. |
 | Build reproducibility | OK | Arduino CLI compile passed with `esp32:esp32:esp32s3`. |
 | Serial bench readiness | OK | Bare-board Serial Monitor checklist exists; hardware has not been tested yet. |
-| Hardware validation | WARNING | Relay behavior, board revision, analog pins, startup close behavior, and bench boot behavior are not validated on hardware in this clean export. |
+| Hardware validation | WARNING | Relay behavior, board revision, analog pins, manual relay behavior, and bench boot behavior are not validated on hardware in this clean export. |
 | Experiment records | WARNING | Build evidence exists, but a completed hardware behavior validation record is still missing. |
 | Production safety | WARNING | Live vent/motor safety is not proven by this public export. |
 
@@ -59,7 +59,8 @@ Finding statuses:
 - Review relay wiring before connecting motors.
 - Confirm relay active state before live actuation.
 - First board power-up must be USB/bare-board/no-load only.
-- Startup close is enabled in the current firmware; close relays may energize for about `10000 ms` on boot.
+- Public default disables startup close to reduce first-boot/no-load risk.
+- If startup close is re-enabled in a private deployment, close relays may energize on boot for `startupCloseMs`.
 - Do not connect motors, actuators, or real relay loads during the first Serial Monitor test.
 - Do not run OPEN/CLOSE commands or web UI motor controls until relay active state and wiring are verified.
 - Keep analog sensors disconnected until pins and voltage dividers are verified.

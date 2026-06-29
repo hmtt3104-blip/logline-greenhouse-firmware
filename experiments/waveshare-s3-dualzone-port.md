@@ -8,9 +8,9 @@ Repository: logline-greenhouse-firmware
 
 Domain: Greenhouse firmware / ESP32-S3 / relay control
 
-Status: Draft / build verified / needs hardware validation
+Status: Draft / build verified / serial bench checklist prepared / needs hardware validation
 
-Trust level: Medium for sanitized build reproducibility; low for hardware behavior until bench validation is repeated from this sanitized export
+Trust level: Medium for sanitized build reproducibility and serial bench-readiness review; low for hardware behavior until bench validation is repeated from this sanitized export
 
 Related decision: TBD
 
@@ -28,7 +28,7 @@ The active Waveshare ESP32-S3 dual-zone sketch can be sanitized into a clean pub
 
 ## Experiment
 
-Copy the main sketch into a clean export, remove hardcoded network details, move credentials to ignored local configuration, remove password printing, document hardware assumptions, and verify that the sanitized Arduino sketch compiles locally.
+Copy the main sketch into a clean export, remove hardcoded network details, move credentials to ignored local configuration, remove password printing, document hardware assumptions, verify that the sanitized Arduino sketch compiles locally, and prepare a safe Serial Monitor bench checklist before any hardware test.
 
 ## Environment
 
@@ -58,15 +58,29 @@ Sketch uses 813749 bytes (62%) of program storage space.
 Global variables use 61016 bytes (18%) of dynamic memory.
 ```
 
+Serial bench-readiness audit from code inspection:
+
+```text
+Serial baud: 115200
+Firmware version string: greenhouse_vents_clean_test-wifi-v3
+Startup close enabled: close relays may energize for about 10000 ms on boot
+Analog sensors disabled by default because ANALOG_SENSOR_PINS_CONFIRMED is 0
+Expected no-DHT behavior: DHT returned NAN errors and zone error state after repeated failures
+```
+
 No new bench hardware behavior data has been collected in this clean export step.
 
 ## Results
 
 Build reproducibility: PASS.
 
+Serial bench checklist readiness: PASS.
+
 Hardware behavior: NOT VALIDATED.
 
 The sanitized sketch compiles locally with a local ignored `firmware/config.h` copied from `firmware/config.example.h` and placeholder/test values.
+
+The code inspection identified a critical first-bench safety point: startup close may energize close relays for both zones for about `10000 ms` on boot. Therefore, the first board test must be bare-board/no-load only.
 
 ## Failures
 
@@ -82,12 +96,16 @@ Arduino sketch naming must be reproducible from the public repo, not dependent o
 
 A successful compile is necessary evidence, but it does not prove relay safety, board revision compatibility, analog sensor behavior, AP setup behavior, or safe live vent/motor operation.
 
+A Serial Monitor bench checklist is required before any board is powered, because boot behavior can energize relays even before manual commands are tested.
+
 ## Hardware validation checklist
 
 Before this experiment can be promoted beyond draft/build-verified status, validate on bench hardware:
 
 - confirm exact Waveshare ESP32-S3 Relay-6CH board revision;
 - confirm firmware flashes successfully to the selected board profile;
+- confirm Serial Monitor startup diagnostics at `115200`;
+- confirm startup close relay behavior on bare board with no loads attached;
 - confirm relay active state before connecting any motor load;
 - confirm each documented relay pin maps to the expected physical relay;
 - confirm DHT readings and failure behavior;
@@ -97,15 +115,23 @@ Before this experiment can be promoted beyond draft/build-verified status, valid
 - confirm failsafe behavior with sensor disconnect and Wi-Fi disconnect;
 - record what was tested, what was not tested, and any deviations from public documentation.
 
+## First-board safety rule
+
+First board power-up must use USB power only, with no motors, actuators, or real relay loads connected.
+
+Do not run OPEN/CLOSE commands or use web UI motor controls until relay active state and wiring are verified.
+
 ## Next Question
 
-Does the sanitized sketch behave correctly on bench hardware with local non-production configuration and no live vent/motor load?
+Does the sanitized sketch boot correctly on a real ESP32-S3 Relay-6CH board and print the expected Serial Monitor diagnostics at `115200` with no loads attached?
 
 ## Reproducibility
 
 PARTIAL.
 
 Another engineer can clone the sanitized export, create local ignored `firmware/config.h`, and compile the firmware with Arduino CLI using `esp32:esp32:esp32s3`.
+
+Another engineer can also follow `docs/setup.md` for the first no-load Serial Monitor bench checklist.
 
 Hardware behavior still requires bench validation.
 
